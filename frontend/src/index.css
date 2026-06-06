@@ -1,0 +1,381 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   DESIGN TOKENS
+   ============================================ */
+:root {
+  /* Dark mode (default) */
+  --bg:         #0a0a0a;
+  --bg-card:    #111111;
+  --bg-subtle:  #161616;
+  --border:     #222222;
+  --border-mid: #2e2e2e;
+  --text:       #f0f0f0;
+  --text-muted: #707070;
+  --text-dim:   #404040;
+  --accent:     #f0f0f0;
+  --accent-inv: #0a0a0a;
+  --input-bg:   #111111;
+  --shadow:     0 1px 3px rgba(0,0,0,0.5), 0 8px 24px rgba(0,0,0,0.4);
+}
+
+:root.theme-light {
+  /* Light mode — clean white, not cream */
+  --bg:         #ffffff;
+  --bg-card:    #f8f8f8;
+  --bg-subtle:  #f2f2f2;
+  --border:     #e5e5e5;
+  --border-mid: #d0d0d0;
+  --text:       #0a0a0a;
+  --text-muted: #666666;
+  --text-dim:   #999999;
+  --accent:     #0a0a0a;
+  --accent-inv: #ffffff;
+  --input-bg:   #ffffff;
+  --shadow:     0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06);
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+  /* Text selection */
+  ::selection { background: var(--accent); color: var(--accent-inv); }
+}
+
+/* ============================================
+   COMPONENT CLASSES
+   ============================================ */
+@layer components {
+
+  /* --- Buttons --- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8125rem;   /* 13px */
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    border-radius: 8px;
+    padding: 0.625rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    text-decoration: none;
+  }
+
+  /* Primary solid — dark bg / white text in dark; black bg / white text in light */
+  .btn-primary {
+    background-color: var(--accent);
+    color: var(--accent-inv);
+    border-color: var(--accent);
+  }
+  .btn-primary:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .btn-primary:active { transform: translateY(0); }
+
+  /* Ghost — transparent, bordered */
+  .btn-ghost {
+    background-color: transparent;
+    color: var(--text);
+    border-color: var(--border-mid);
+  }
+  .btn-ghost:hover {
+    border-color: var(--text-muted);
+    background-color: var(--bg-subtle);
+  }
+
+  /* --- Cards --- */
+  .card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .card:hover {
+    border-color: var(--border-mid);
+    box-shadow: var(--shadow);
+  }
+
+  /* --- Inputs --- */
+  .input {
+    width: 100%;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-mid);
+    color: var(--text);
+    caret-color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9375rem;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    outline: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    appearance: none;
+  }
+  .input::placeholder {
+    color: var(--text-dim);
+  }
+  .input:focus {
+    border-color: var(--text-muted);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+
+  /* Input with leading icon — enforce left padding */
+  .input-icon {
+    padding-left: 2.75rem;
+  }
+
+  /* --- Field icon --- */
+  .field-icon {
+    position: absolute;
+    left: 0.875rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.125rem;
+    height: 1.125rem;
+    color: var(--text-muted);
+    pointer-events: none;
+    z-index: 2;
+    flex-shrink: 0;
+  }
+
+  /* Legacy support — keep .input-premium working (flattened, no @apply-in-nest) */
+  .input-premium {
+    width: 100%;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-mid);
+    color: var(--text);
+    caret-color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9375rem;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    outline: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    appearance: none;
+  }
+  .input-premium::placeholder { color: var(--text-dim); }
+  .input-premium:focus {
+    border-color: var(--text-muted);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+  .relative > input.input-premium { padding-left: 2.75rem !important; }
+
+  /* --- Labels --- */
+  .label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 0.375rem;
+    letter-spacing: 0.01em;
+  }
+
+  /* --- Badges --- */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 0.25rem 0.625rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-mid);
+    color: var(--text-muted);
+  }
+
+  /* --- Section dividers --- */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.5rem 0;
+  }
+
+  /* --- Alert / error box --- */
+  .alert-error {
+    background-color: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    color: #f87171;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  /* --- Page wrapper --- */
+  .page {
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+    padding-block: 2.5rem;
+    min-height: 100svh;
+  }
+
+  /* --- Border premium legacy --- */
+  .border-premium { border: 1px solid var(--border); }
+
+  /* --- select option theming --- */
+  select.input option, select.input-premium option {
+    background-color: var(--bg-card);
+    color: var(--text);
+  }
+}
+
+/* Legacy aliases — outside @layer so @apply works correctly */
+.btn-solid {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  border-radius: 8px;
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+  text-decoration: none;
+  background-color: var(--accent);
+  color: var(--accent-inv);
+  border: 1px solid var(--accent);
+}
+.btn-solid:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-solid:active { transform: translateY(0); }
+.btn-solid:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  border-radius: 8px;
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+  text-decoration: none;
+  background-color: transparent;
+  color: var(--text);
+  border: 1px solid var(--border-mid);
+}
+.btn-outline:hover { border-color: var(--text-muted); background-color: var(--bg-subtle); }
+
+.btn-outline-gray {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  border-radius: 8px;
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+  text-decoration: none;
+  background-color: transparent;
+  color: var(--text);
+  border: 1px solid var(--border-mid);
+  opacity: 0.6;
+}
+.btn-outline-gray:hover { opacity: 1; border-color: var(--text-muted); }
+
+/* ============================================
+   LIGHT MODE UTILITY OVERRIDES
+   Tailwind hardcodes colours like bg-black,
+   so we softly remap them when .theme-light is active.
+   ============================================ */
+.theme-light {
+  /* Background remaps */
+  .bg-black        { background-color: var(--bg) !important; }
+  .bg-zinc-950     { background-color: var(--bg-card) !important; }
+  .bg-zinc-900     { background-color: var(--bg-subtle) !important; }
+
+  /* Text remaps */
+  .text-white      { color: var(--text) !important; }
+  .text-zinc-400,
+  .text-zinc-500,
+  .text-zinc-600   { color: var(--text-muted) !important; }
+  .text-black      { color: var(--bg) !important; }
+
+  /* Border remaps */
+  .border-white        { border-color: var(--text) !important; }
+  .border-zinc-900,
+  .border-zinc-800,
+  .border-zinc-950     { border-color: var(--border) !important; }
+  .divide-zinc-950     { border-color: var(--border) !important; }
+
+  /* Logo badge invert */
+  .bg-white { background-color: var(--text) !important; color: var(--bg) !important; }
+
+  /* Inputs */
+  .input-premium {
+    background-color: var(--input-bg) !important;
+    border-color: var(--border-mid) !important;
+    color: var(--text) !important;
+  }
+  .input-premium::placeholder { color: var(--text-dim) !important; }
+
+  /* Icons */
+  .field-icon { color: var(--text-muted) !important; }
+
+  /* Buttons */
+  .btn-primary, .btn-solid {
+    background-color: var(--accent) !important;
+    color: var(--accent-inv) !important;
+    border-color: var(--accent) !important;
+  }
+  .btn-ghost, .btn-outline {
+    color: var(--text) !important;
+    border-color: var(--border-mid) !important;
+    background-color: transparent !important;
+  }
+}
